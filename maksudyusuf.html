@@ -1,0 +1,1628 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Maksud Yusuf — Portfolio</title>
+  <meta name="description" content="Maksud Yusuf — student at Landau School, goalkeeper, researcher, and builder of EcoLens. Applying to study cybersecurity.">
+  <meta name="author" content="Maksud Yusuf">
+  <meta property="og:title" content="Maksud Yusuf — Portfolio">
+  <meta property="og:description" content="Goalkeeper, builder, future cybersecurity engineer. Research and projects connecting IT, philosophy, and ecology.">
+  <meta property="og:type" content="website">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🧤</text></svg>">
+  <style>
+  :root {
+    --ground: #FAFBF8;
+    --ground-raised: #F1F4EE;
+    --ink: #17281F;
+    --ink-soft: #46584D;
+    --ink-faint: #6E7F73;
+    --accent: #2E6E46;
+    --accent-strong: #235838;
+    --line: #DCE3DA;
+    --chalk: #2E6E46;
+    --card: #FFFFFF;
+    --cover-a: #2E6E46;
+    --cover-b: #4E9268;
+    --shadow: 0 1px 2px rgba(23, 40, 31, 0.05), 0 8px 24px rgba(23, 40, 31, 0.06);
+    --shadow-hover: 0 2px 4px rgba(23, 40, 31, 0.07), 0 14px 36px rgba(23, 40, 31, 0.12);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --ground: #101913;
+      --ground-raised: #16221A;
+      --ink: #E9EFE8;
+      --ink-soft: #AFC0B2;
+      --ink-faint: #7E9284;
+      --accent: #6FBF8E;
+      --accent-strong: #8FD3A9;
+      --line: #24352A;
+      --chalk: #6FBF8E;
+      --card: #16221A;
+      --cover-a: #1E4630;
+      --cover-b: #2E6E46;
+      --shadow: 0 1px 2px rgba(0, 0, 0, 0.3), 0 8px 24px rgba(0, 0, 0, 0.35);
+      --shadow-hover: 0 2px 4px rgba(0, 0, 0, 0.35), 0 14px 36px rgba(0, 0, 0, 0.45);
+    }
+  }
+  :root[data-theme="light"] {
+    --ground: #FAFBF8;
+    --ground-raised: #F1F4EE;
+    --ink: #17281F;
+    --ink-soft: #46584D;
+    --ink-faint: #6E7F73;
+    --accent: #2E6E46;
+    --accent-strong: #235838;
+    --line: #DCE3DA;
+    --chalk: #2E6E46;
+    --card: #FFFFFF;
+    --cover-a: #2E6E46;
+    --cover-b: #4E9268;
+    --shadow: 0 1px 2px rgba(23, 40, 31, 0.05), 0 8px 24px rgba(23, 40, 31, 0.06);
+    --shadow-hover: 0 2px 4px rgba(23, 40, 31, 0.07), 0 14px 36px rgba(23, 40, 31, 0.12);
+  }
+  :root[data-theme="dark"] {
+    --ground: #101913;
+    --ground-raised: #16221A;
+    --ink: #E9EFE8;
+    --ink-soft: #AFC0B2;
+    --ink-faint: #7E9284;
+    --accent: #6FBF8E;
+    --accent-strong: #8FD3A9;
+    --line: #24352A;
+    --chalk: #6FBF8E;
+    --card: #16221A;
+    --cover-a: #1E4630;
+    --cover-b: #2E6E46;
+    --shadow: 0 1px 2px rgba(0, 0, 0, 0.3), 0 8px 24px rgba(0, 0, 0, 0.35);
+    --shadow-hover: 0 2px 4px rgba(0, 0, 0, 0.35), 0 14px 36px rgba(0, 0, 0, 0.45);
+  }
+
+  * { box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    .rise, .goal-line { animation: none !important; opacity: 1 !important; transform: none !important; }
+    .project-card, .project-card:hover { transition: none !important; transform: none !important; }
+    .reveal { opacity: 1 !important; transform: none !important; transition: none !important; }
+    .contact-row a, .btn-row a, nav .links a::after { transition: none !important; }
+  }
+
+  /* ── Scroll reveal ───────────────────── */
+  .reveal {
+    opacity: 0;
+    transform: translateY(18px);
+    transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+  }
+  .reveal.in {
+    opacity: 1;
+    transform: none;
+  }
+
+  body {
+    margin: 0;
+    background: var(--ground);
+    color: var(--ink);
+    font-family: "Seravek", "Avenir Next", "Avenir", "Segoe UI", system-ui, sans-serif;
+    font-size: 1.0625rem;
+    line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .serif {
+    font-family: "Iowan Old Style", "Palatino Linotype", Palatino, "Book Antiqua", Georgia, serif;
+  }
+
+  .mono {
+    font-family: ui-monospace, "SF Mono", "Cascadia Code", Menlo, Consolas, monospace;
+  }
+
+  a { color: var(--accent); text-decoration: none; }
+  a:hover { text-decoration: underline; text-underline-offset: 3px; }
+  a:focus-visible, button:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 3px;
+    border-radius: 2px;
+  }
+
+  .wrap {
+    max-width: 50rem;
+    margin: 0 auto;
+    padding: 0 1.5rem;
+  }
+
+  [hidden] { display: none !important; }
+
+  /* ── Nav ─────────────────────────────── */
+  nav {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    background: color-mix(in srgb, var(--ground) 88%, transparent);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--line);
+  }
+  nav .wrap {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 1rem;
+    padding-top: 0.85rem;
+    padding-bottom: 0.85rem;
+  }
+  nav .name {
+    font-weight: 600;
+    letter-spacing: 0.01em;
+    color: var(--ink);
+    white-space: nowrap;
+  }
+  nav a.name:hover { text-decoration: none; color: var(--accent); }
+  nav .links {
+    display: flex;
+    gap: 1.25rem;
+    font-size: 0.85rem;
+    overflow-x: auto;
+  }
+  nav .links a {
+    color: var(--ink-soft);
+    letter-spacing: 0.04em;
+    white-space: nowrap;
+    position: relative;
+  }
+  nav .links a::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: -5px;
+    height: 2px;
+    width: 100%;
+    background: var(--accent);
+    border-radius: 1px;
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.22s ease-out;
+  }
+  nav .links a:hover { color: var(--accent); text-decoration: none; }
+  nav .links a:hover::after { transform: scaleX(1); }
+
+  /* ── Hero ────────────────────────────── */
+  header.hero {
+    padding: 6rem 0 4.5rem;
+  }
+  .eyebrow {
+    font-size: 0.75rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin: 0 0 1.25rem;
+  }
+  header.hero h1 {
+    font-size: clamp(2.4rem, 6vw, 3.6rem);
+    line-height: 1.12;
+    font-weight: 500;
+    margin: 0 0 1.5rem;
+    text-wrap: balance;
+    letter-spacing: -0.015em;
+  }
+  header.hero h1 em {
+    font-style: italic;
+    color: var(--accent);
+  }
+  header.hero p.lede {
+    font-size: 1.2rem;
+    color: var(--ink-soft);
+    max-width: 38rem;
+    margin: 0;
+    text-wrap: pretty;
+  }
+  .goal-line {
+    height: 3px;
+    background: var(--chalk);
+    border: none;
+    margin: 2.75rem 0 0;
+    width: 6.5rem;
+    border-radius: 2px;
+    animation: chalk-draw 0.8s ease-out 0.45s both;
+  }
+  @keyframes chalk-draw {
+    from { width: 0; opacity: 0; }
+    to { width: 6.5rem; opacity: 1; }
+  }
+
+  .rise {
+    opacity: 0;
+    transform: translateY(14px);
+    animation: rise 0.7s ease-out forwards;
+  }
+  .rise.d1 { animation-delay: 0.08s; }
+  .rise.d2 { animation-delay: 0.18s; }
+  .rise.d3 { animation-delay: 0.28s; }
+  @keyframes rise {
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ── Sections ────────────────────────── */
+  section {
+    padding: 3.75rem 0;
+    border-top: 1px solid var(--line);
+  }
+  section h2 {
+    font-size: 1.85rem;
+    font-weight: 500;
+    margin: 0.4rem 0 1.5rem;
+    letter-spacing: -0.01em;
+    text-wrap: balance;
+  }
+  section p { text-wrap: pretty; }
+
+  .section-label {
+    font-size: 0.72rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    margin: 0;
+  }
+
+  /* ── About ───────────────────────────── */
+  .about-grid {
+    display: grid;
+    grid-template-columns: 15rem 1fr;
+    gap: 2.5rem;
+    align-items: start;
+    margin-top: 2rem;
+  }
+  @media (max-width: 40rem) {
+    .about-grid { grid-template-columns: 1fr; }
+    .portrait { max-width: 15rem; }
+  }
+  .portrait {
+    aspect-ratio: 4 / 5;
+    border-radius: 14px;
+    background: linear-gradient(160deg, var(--cover-a), var(--cover-b));
+    box-shadow: var(--shadow);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    color: #F3F7F2;
+    overflow: hidden;
+    position: relative;
+  }
+  .portrait img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  .portrait .initials {
+    font-size: 3.5rem;
+    font-weight: 500;
+    letter-spacing: 0.04em;
+  }
+  .portrait .hint {
+    font-size: 0.72rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    opacity: 0.75;
+  }
+  .about-text p:first-child { margin-top: 0; }
+
+  .facts-list {
+    list-style: none;
+    margin: 2rem 0 0;
+    padding: 0.35rem 1.4rem;
+    background: var(--ground-raised);
+    border: 1px solid var(--line);
+    border-radius: 12px;
+  }
+  .facts-list li {
+    display: grid;
+    grid-template-columns: 9.5rem 1fr;
+    gap: 1rem;
+    align-items: baseline;
+    padding: 0.85rem 0;
+    border-bottom: 1px solid var(--line);
+  }
+  .facts-list li:last-child { border-bottom: none; }
+  .facts-list .k {
+    font-size: 0.7rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+  }
+  .facts-list .v { font-weight: 600; font-size: 0.95rem; }
+  @media (max-width: 34rem) {
+    .facts-list li { grid-template-columns: 1fr; gap: 0.2rem; }
+  }
+
+  /* ── Cards (research) ────────────────── */
+  .card {
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    padding: 1.75rem 1.75rem 1.6rem;
+    box-shadow: var(--shadow);
+    margin-top: 1.5rem;
+  }
+  .card h3 {
+    font-size: 1.3rem;
+    font-weight: 500;
+    margin: 0.5rem 0 0.75rem;
+    letter-spacing: -0.005em;
+  }
+  .card p { margin: 0 0 0.9rem; color: var(--ink-soft); }
+  .card p:last-child { margin-bottom: 0; }
+
+  .tag-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-top: 1.1rem;
+  }
+  .tag {
+    font-size: 0.72rem;
+    letter-spacing: 0.06em;
+    padding: 0.25rem 0.65rem;
+    border-radius: 999px;
+    border: 1px solid var(--line);
+    color: var(--ink-soft);
+    background: var(--ground-raised);
+    white-space: nowrap;
+  }
+
+  .status {
+    display: inline-block;
+    font-size: 0.7rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--accent);
+    border: 1px solid color-mix(in srgb, var(--accent) 40%, transparent);
+    border-radius: 999px;
+    padding: 0.2rem 0.7rem;
+  }
+
+  .placeholder-note {
+    border-left: 3px solid var(--line);
+    padding: 0.15rem 0 0.15rem 1rem;
+    color: var(--ink-faint);
+    font-size: 0.9rem;
+    font-style: italic;
+  }
+
+  /* ── Project grid (clickable cards) ──── */
+  .project-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(15.5rem, 1fr));
+    gap: 1.5rem;
+    margin-top: 2rem;
+  }
+  .project-card {
+    display: flex;
+    flex-direction: column;
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    overflow: hidden;
+    box-shadow: var(--shadow);
+    color: var(--ink);
+    transition: transform 0.18s ease, box-shadow 0.18s ease;
+  }
+  .project-card:hover {
+    text-decoration: none;
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-hover);
+  }
+  .project-card .cover {
+    position: relative;
+    aspect-ratio: 16 / 9;
+    background: linear-gradient(160deg, var(--cover-a), var(--cover-b));
+    display: flex;
+    align-items: flex-end;
+    justify-content: flex-end;
+    overflow: hidden;
+  }
+  .project-card .cover .mark {
+    font-family: "Iowan Old Style", "Palatino Linotype", Palatino, Georgia, serif;
+    font-size: 7rem;
+    line-height: 1;
+    color: rgba(255, 255, 255, 0.16);
+    margin: -1rem 0.5rem -1.5rem 0;
+    user-select: none;
+  }
+  .project-card .cover .pill {
+    position: absolute;
+    top: 0.85rem;
+    left: 0.85rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    background: var(--card);
+    color: var(--ink);
+    font-size: 0.78rem;
+    font-weight: 600;
+    padding: 0.32rem 0.85rem;
+    border-radius: 999px;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.18);
+  }
+  .project-card .cover .pill::before {
+    content: "";
+    width: 0.5rem;
+    height: 0.5rem;
+    border-radius: 50%;
+    background: var(--accent);
+  }
+  .project-card .body {
+    padding: 1.15rem 1.25rem 1.1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+    flex: 1;
+  }
+  .project-card .body h3 {
+    margin: 0;
+    font-size: 1.15rem;
+    font-weight: 600;
+    letter-spacing: -0.005em;
+  }
+  .project-card .body .desc {
+    margin: 0;
+    color: var(--ink-soft);
+    font-size: 0.92rem;
+    flex: 1;
+  }
+  .project-card .body .meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 1rem;
+    margin-top: 0.75rem;
+    padding-top: 0.75rem;
+    border-top: 1px solid var(--line);
+    font-size: 0.82rem;
+    color: var(--ink-faint);
+  }
+  .project-card .body .meta .open {
+    color: var(--accent);
+    font-weight: 600;
+    white-space: nowrap;
+  }
+  .project-card.placeholder {
+    border-style: dashed;
+    box-shadow: none;
+  }
+  .project-card.placeholder:hover { transform: none; box-shadow: none; }
+  .project-card.placeholder .cover {
+    background: var(--ground-raised);
+  }
+  .project-card.placeholder .cover .mark { color: var(--line); }
+
+  /* ── Project detail pages ────────────── */
+  .back-link {
+    display: inline-block;
+    margin: 2.5rem 0 0;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--ink-soft);
+  }
+  .back-link:hover { color: var(--accent); text-decoration: none; }
+  .project-hero {
+    padding: 2rem 0 2.5rem;
+  }
+  .project-hero h1 {
+    font-size: clamp(2rem, 5vw, 2.9rem);
+    font-weight: 500;
+    line-height: 1.15;
+    letter-spacing: -0.01em;
+    margin: 0.75rem 0 1rem;
+    text-wrap: balance;
+  }
+  .project-hero .sub {
+    font-size: 1.15rem;
+    color: var(--ink-soft);
+    max-width: 38rem;
+    margin: 0;
+    text-wrap: pretty;
+  }
+  .project-banner {
+    border-radius: 16px;
+    background: linear-gradient(160deg, var(--cover-a), var(--cover-b));
+    aspect-ratio: 21 / 9;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: rgba(255, 255, 255, 0.85);
+    box-shadow: var(--shadow);
+    margin: 1rem 0 0;
+    overflow: hidden;
+    position: relative;
+  }
+  .project-banner .big-mark {
+    font-family: "Iowan Old Style", "Palatino Linotype", Palatino, Georgia, serif;
+    font-size: clamp(4rem, 12vw, 8rem);
+    color: rgba(255, 255, 255, 0.2);
+    user-select: none;
+  }
+  .project-banner .hint {
+    position: absolute;
+    bottom: 1rem;
+    right: 1.25rem;
+    font-size: 0.72rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    opacity: 0.7;
+  }
+  .project-page section { border-top: 1px solid var(--line); padding: 2.75rem 0; }
+  .project-page section:first-of-type { border-top: none; }
+  .project-page h2 { font-size: 1.5rem; }
+  .btn-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.85rem;
+    margin-top: 1.5rem;
+  }
+  .btn-row a {
+    display: inline-block;
+    padding: 0.65rem 1.3rem;
+    border-radius: 999px;
+    border: 1px solid var(--line);
+    color: var(--ink);
+    font-weight: 600;
+    font-size: 0.95rem;
+    transition: border-color 0.15s ease, background 0.15s ease, transform 0.15s ease, box-shadow 0.15s ease;
+  }
+  .btn-row a:hover {
+    text-decoration: none;
+    border-color: var(--accent);
+    background: var(--ground-raised);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow);
+  }
+  .btn-row a.primary {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: var(--ground);
+  }
+  .btn-row a.primary:hover {
+    background: var(--accent-strong);
+    border-color: var(--accent-strong);
+  }
+  .stack-list {
+    list-style: none;
+    padding: 0;
+    margin: 1.25rem 0 0;
+    display: grid;
+    gap: 0.6rem;
+  }
+  .stack-list li {
+    display: grid;
+    grid-template-columns: 9.5rem 1fr;
+    gap: 1rem;
+    padding: 0.7rem 0;
+    border-bottom: 1px solid var(--line);
+    font-size: 0.95rem;
+  }
+  .stack-list li:last-child { border-bottom: none; }
+  .stack-list .k {
+    font-size: 0.72rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    padding-top: 0.15rem;
+  }
+  @media (max-width: 34rem) {
+    .stack-list li { grid-template-columns: 1fr; gap: 0.15rem; }
+  }
+
+  /* ── Hash lab (security demo) ────────── */
+  .hash-lab input {
+    width: 100%;
+    font-family: ui-monospace, "SF Mono", "Cascadia Code", Menlo, Consolas, monospace;
+    font-size: 0.95rem;
+    padding: 0.75rem 0.9rem;
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    background: var(--ground-raised);
+    color: var(--ink);
+    outline: none;
+    margin: 0.4rem 0 1.1rem;
+    transition: border-color 0.15s ease;
+  }
+  .hash-lab input:focus { border-color: var(--accent); }
+  .hash-lab input::placeholder { color: var(--ink-faint); }
+  .hash-out {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.3rem;
+    font-size: 0.8rem;
+  }
+  .hash-out span {
+    padding: 0.15rem 0.32rem;
+    border-radius: 4px;
+    background: var(--ground-raised);
+    color: var(--ink-soft);
+    transition: background 0.3s ease, color 0.3s ease;
+  }
+  .hash-out span.chg {
+    background: color-mix(in srgb, var(--accent) 18%, transparent);
+    color: var(--accent);
+    font-weight: 600;
+  }
+  .hash-stat {
+    margin: 0.55rem 0 0;
+    font-size: 0.78rem;
+    color: var(--ink-faint);
+    letter-spacing: 0.04em;
+  }
+  .hash-row-label {
+    margin: 1.3rem 0 0.5rem;
+    font-size: 0.72rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--accent);
+  }
+
+  /* ── Goalkeeper section ──────────────── */
+  .pitch-panel {
+    position: relative;
+    border-radius: 16px;
+    overflow: hidden;
+    background: linear-gradient(160deg, var(--cover-a), var(--cover-b));
+    box-shadow: var(--shadow);
+    margin: 2rem 0;
+  }
+  .pitch-panel canvas {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+  .pitch-panel .hint {
+    position: absolute;
+    bottom: 0.9rem;
+    right: 1.15rem;
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 0.7rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    pointer-events: none;
+  }
+  .gk-quote {
+    font-size: clamp(1.35rem, 3.2vw, 1.7rem);
+    line-height: 1.45;
+    font-weight: 500;
+    font-style: italic;
+    margin: 1.75rem 0;
+    padding-left: 1.4rem;
+    border-left: 3px solid var(--chalk);
+    text-wrap: balance;
+    color: var(--ink);
+  }
+
+  /* ── Contact ─────────────────────────── */
+  .contact-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.85rem;
+    margin-top: 1.75rem;
+  }
+  .contact-row a {
+    display: inline-block;
+    padding: 0.65rem 1.3rem;
+    border-radius: 999px;
+    border: 1px solid var(--line);
+    color: var(--ink);
+    font-weight: 600;
+    font-size: 0.95rem;
+    transition: border-color 0.15s ease, background 0.15s ease, transform 0.15s ease, box-shadow 0.15s ease;
+  }
+  .contact-row a:hover {
+    text-decoration: none;
+    border-color: var(--accent);
+    background: var(--ground-raised);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow);
+  }
+  .email-line {
+    margin-top: 1.4rem;
+    font-size: 0.92rem;
+    color: var(--ink-faint);
+  }
+  .email-line a { color: var(--accent); font-weight: 600; }
+  .contact-row a.primary {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: var(--ground);
+  }
+  .contact-row a.primary:hover {
+    background: var(--accent-strong);
+    border-color: var(--accent-strong);
+  }
+
+  footer {
+    border-top: 1px solid var(--line);
+    padding: 2.25rem 0 3.5rem;
+    color: var(--ink-faint);
+    font-size: 0.85rem;
+  }
+  footer .integrity {
+    display: block;
+    margin-top: 0.6rem;
+    font-size: 0.72rem;
+    letter-spacing: 0.05em;
+    color: var(--ink-faint);
+    opacity: 0.8;
+  }
+
+  /* ── Command palette (⌘K) ────────────── */
+  .cmdk-hint {
+    font-size: 0.72rem;
+    letter-spacing: 0.06em;
+    color: var(--ink-faint);
+    background: var(--ground-raised);
+    border: 1px solid var(--line);
+    border-radius: 6px;
+    padding: 0.2rem 0.55rem;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: border-color 0.15s ease, color 0.15s ease;
+  }
+  .cmdk-hint:hover { border-color: var(--accent); color: var(--accent); }
+  .cmdk-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 50;
+    background: rgba(10, 20, 14, 0.45);
+    backdrop-filter: blur(4px);
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    padding: 14vh 1.5rem 0;
+  }
+  .cmdk-panel {
+    width: 100%;
+    max-width: 33rem;
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    box-shadow: var(--shadow-hover);
+    overflow: hidden;
+    animation: cmdk-in 0.18s ease-out;
+  }
+  @keyframes cmdk-in {
+    from { opacity: 0; transform: translateY(8px) scale(0.98); }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .cmdk-panel { animation: none; }
+  }
+  .cmdk-panel input {
+    width: 100%;
+    border: none;
+    outline: none;
+    background: transparent;
+    color: var(--ink);
+    font: inherit;
+    padding: 1rem 1.15rem;
+    border-bottom: 1px solid var(--line);
+  }
+  .cmdk-panel input::placeholder { color: var(--ink-faint); }
+  .cmdk-list {
+    max-height: 19rem;
+    overflow-y: auto;
+    padding: 0.4rem;
+    margin: 0;
+    list-style: none;
+  }
+  .cmdk-list li {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 1rem;
+    padding: 0.6rem 0.75rem;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 0.95rem;
+    color: var(--ink);
+  }
+  .cmdk-list li .hint {
+    color: var(--ink-faint);
+    font-size: 0.75rem;
+    white-space: nowrap;
+  }
+  .cmdk-list li.active { background: var(--ground-raised); color: var(--accent); }
+  .cmdk-empty { padding: 1rem 1.15rem; color: var(--ink-faint); font-size: 0.9rem; }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="wrap">
+    <a class="name serif" href="#/">Maksud Yusuf</a>
+    <span class="links">
+      <a href="#about" data-anchor>About</a>
+      <a href="#research" data-anchor>Research</a>
+      <a href="#projects" data-anchor>Projects</a>
+      <a href="#security" data-anchor>Security</a>
+      <a href="#goalkeeper" data-anchor>Goalkeeper</a>
+      <a href="#contact" data-anchor>Contact</a>
+    </span>
+    <button class="cmdk-hint mono" id="cmdk-open" aria-label="Open quick navigation">⌘K</button>
+  </div>
+</nav>
+
+<!-- ══════════════ HOME ══════════════ -->
+<main data-page="home">
+
+  <header class="hero">
+    <div class="wrap">
+      <p class="eyebrow mono rise">Student · Researcher · Builder</p>
+      <h1 class="serif rise d1">A goalkeeper learns one thing early:<br><em>you are the last line of defense.</em></h1>
+      <p class="lede rise d2">I'm Maksud Yusuf, a student at Landau School. I stand between the ball and the net on the pitch — and I want to spend my career standing between attackers and the systems people depend on. I study where technology meets philosophy and ecology, and I'm applying to study cybersecurity.</p>
+      <hr class="goal-line" aria-hidden="true">
+    </div>
+  </header>
+
+  <section id="about">
+    <div class="wrap">
+      <p class="section-label mono">About</p>
+      <h2 class="serif">Defense as a way of thinking</h2>
+      <div class="about-grid">
+        <div class="portrait" role="img" aria-label="Portrait of Maksud Yusuf">
+          <!-- When you have a photo, replace this block with: <img src="..." alt="Maksud Yusuf"> -->
+          <span class="initials serif">MY</span>
+          <span class="hint mono">Photo coming soon</span>
+        </div>
+        <div class="about-text">
+          <p>I'm a student at <strong>Landau School</strong>, where I've built my studies around the things I can't stop thinking about: how machines learn, how systems break, and how technology changes what it means to live well on this planet. I also serve as the school's <strong>vice president</strong> and edit the <strong>school newspaper</strong> — two jobs that taught me the same thing from different sides: leadership is mostly listening, and good writing is mostly rewriting.</p>
+          <p>Goalkeeping taught me how to read a game: anticipate before the shot, position early, stay calm when everything happens at once. Cybersecurity asks for exactly the same instincts — anticipating attacks, positioning defenses, keeping a clear head under pressure. That's why the field feels less like a career choice and more like a continuation of something I already am.</p>
+          <p>I love AI and IT, but I don't think technology stands on its own. My work connects it to philosophy — asking why we build what we build — and to ecology, because the systems we protect include the natural one we all live in. My flagship project, EcoLens, grew directly out of that idea.</p>
+          <p>Away from screens and the pitch, I hold a music school diploma in guitar. Years of scales and repertoire taught me the same lesson as the goal line: mastery is unglamorous daily repetition — until one day it sounds like music.</p>
+        </div>
+      </div>
+      <ul class="facts-list">
+        <li>
+          <span class="k mono">School</span>
+          <span class="v">Landau School</span>
+        </li>
+        <li>
+          <span class="k mono">Leadership</span>
+          <span class="v">School Vice President</span>
+        </li>
+        <li>
+          <span class="k mono">Newspaper</span>
+          <span class="v">Editor, school newspaper</span>
+        </li>
+        <li>
+          <span class="k mono">Football</span>
+          <span class="v">Goalkeeper</span>
+        </li>
+        <li>
+          <span class="k mono">Music</span>
+          <span class="v">Guitar — music school diploma</span>
+        </li>
+        <li>
+          <span class="k mono">Applying for</span>
+          <span class="v">Cybersecurity</span>
+        </li>
+        <li>
+          <span class="k mono">Interests</span>
+          <span class="v">AI · IT · Philosophy · Ecology</span>
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <section id="research">
+    <div class="wrap">
+      <p class="section-label mono">Research</p>
+      <h2 class="serif">Two questions I couldn't let go of</h2>
+      <p>Research, for me, starts the way a save does — with noticing something before anyone else reacts to it. These are the two projects where I followed a question all the way through.</p>
+
+      <article class="card">
+        <span class="status">Research I</span>
+        <h3 class="serif">[Title of your first research]</h3>
+        <p class="placeholder-note">Replace this with a 3–4 sentence abstract: the question you asked, how you investigated it, and what you found. Add where it was presented or published, if anywhere.</p>
+        <div class="tag-row">
+          <span class="tag">[Field]</span>
+          <span class="tag">[Method]</span>
+          <span class="tag">[Year]</span>
+        </div>
+      </article>
+
+      <article class="card">
+        <span class="status">Research II</span>
+        <h3 class="serif">[Title of your second research]</h3>
+        <p class="placeholder-note">Replace this with a 3–4 sentence abstract: the question you asked, how you investigated it, and what you found. Add where it was presented or published, if anywhere.</p>
+        <div class="tag-row">
+          <span class="tag">[Field]</span>
+          <span class="tag">[Method]</span>
+          <span class="tag">[Year]</span>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <section id="projects">
+    <div class="wrap">
+      <p class="section-label mono">Projects</p>
+      <h2 class="serif">Where IT meets philosophy and ecology</h2>
+      <p>Click a project to read its full story — the problem, the build, and what it taught me.</p>
+
+      <div class="project-grid">
+        <a class="project-card" href="#/ecolens">
+          <span class="cover">
+            <span class="pill">AI · Ecology</span>
+            <span class="mark" aria-hidden="true">E</span>
+          </span>
+          <span class="body">
+            <h3>EcoLens</h3>
+            <p class="desc">AI waste sorting in your pocket — photograph any waste and learn how to recycle it, in Azerbaijani and English.</p>
+            <span class="meta">
+              <span>by Maksud Yusuf</span>
+              <span class="open">Read more →</span>
+            </span>
+          </span>
+        </a>
+
+        <span class="project-card placeholder">
+          <span class="cover">
+            <span class="mark" aria-hidden="true">+</span>
+          </span>
+          <span class="body">
+            <h3>Your next project</h3>
+            <p class="desc">More projects go here — apps, competition entries, school builds. Each one gets its own page like EcoLens.</p>
+            <span class="meta">
+              <span>Coming soon</span>
+            </span>
+          </span>
+        </span>
+      </div>
+    </div>
+  </section>
+
+  <section id="security">
+    <div class="wrap">
+      <p class="section-label mono">IT · Cybersecurity</p>
+      <h2 class="serif">Trust, made of math</h2>
+      <p>What pulled me into security wasn't hacking scenes from movies — it was the realization that trust itself can be engineered. When you message a friend, pay online, or update your phone, you're trusting mathematics no one can cheat. Cryptography is where philosophy becomes engineering: questions about identity, proof, and truth, answered in code.</p>
+      <p>My favorite example is the cryptographic hash — a fingerprint for information. It's the same mechanism that signs this very page in the footer below. Try it:</p>
+
+      <div class="card hash-lab">
+        <span class="status">Live demo</span>
+        <h3 class="serif">The avalanche effect</h3>
+        <p>Type anything, then change a single letter — and compare what happens on the two lines below. Both update live, computed entirely in your browser.</p>
+        <label class="mono" for="hash-input" style="font-size:0.72rem; letter-spacing:0.12em; text-transform:uppercase; color:var(--ink-faint);">Your input</label>
+        <input id="hash-input" type="text" value="Landau School" autocomplete="off" spellcheck="false" placeholder="Type anything…">
+        <p class="hash-row-label mono">1 · Hex encoding — reversible</p>
+        <div class="hash-out mono" id="hex-out" aria-live="polite"></div>
+        <p class="hash-stat mono" id="hex-stat"></p>
+        <p class="hash-row-label mono">2 · SHA-256 fingerprint — one-way</p>
+        <div class="hash-out mono" id="hash-out" aria-live="polite"></div>
+        <p class="hash-stat mono" id="hash-stat"></p>
+        <p>The first line is <em>encoding</em> — it hides nothing; run it backward and your text comes out. The second is <em>cryptography</em> — it cannot be run backward, and one changed letter rewrites half of it. Knowing the difference is where security starts.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="goalkeeper">
+    <div class="wrap">
+      <p class="section-label mono">Beyond the classroom</p>
+      <h2 class="serif">The goalkeeper</h2>
+      <p>Football is where I first learned everything I now apply to technology. A goalkeeper doesn't get to make mistakes quietly — every error is a goal, visible to everyone. You learn accountability fast. You learn to communicate, because you see the whole field and your defenders don't. And you learn that ninety minutes of concentration matter more than ninety seconds of brilliance.</p>
+      <div class="pitch-panel">
+        <canvas id="gk-canvas" width="800" height="340" role="img" aria-label="Animated chalk drawing of a goalkeeper diving to tip a shot over the bar"></canvas>
+        <span class="hint mono">90&prime; of concentration</span>
+      </div>
+      <blockquote class="gk-quote serif">A striker can miss ten chances and be a hero for scoring one. A goalkeeper — like a security engineer — has to be right every time.</blockquote>
+      <p>That asymmetry is exactly what draws me to cybersecurity. Defenders don't get highlight reels. They get systems that quietly keep working, and people who never find out how close the shot came.</p>
+    </div>
+  </section>
+
+  <section id="contact">
+    <div class="wrap">
+      <p class="section-label mono">Contact</p>
+      <h2 class="serif">Let's talk</h2>
+      <p>I'm happy to share my research papers, walk through EcoLens, or talk about football, AI, or why philosophy belongs in engineering.</p>
+      <div class="contact-row">
+        <a class="primary" href="mailto:maksud.yusuf2017@gmail.com">Email me</a>
+        <a href="https://github.com/Mausertheking" target="_blank" rel="noopener">GitHub</a>
+      </div>
+      <p class="email-line mono">→ <a href="mailto:maksud.yusuf2017@gmail.com">maksud.yusuf2017@gmail.com</a></p>
+    </div>
+  </section>
+
+</main>
+
+<!-- ══════════════ PROJECT: ECOLENS ══════════════ -->
+<main data-page="ecolens" class="project-page" hidden>
+  <div class="wrap">
+    <a class="back-link" href="#/">← Back to portfolio</a>
+
+    <header class="project-hero">
+      <p class="eyebrow mono">Project · AI · Ecology</p>
+      <h1 class="serif">EcoLens — AI waste sorting for everyone</h1>
+      <p class="sub">Point your camera at any piece of waste. EcoLens identifies it and tells you exactly how to recycle it — in Azerbaijani and English.</p>
+      <div class="project-banner">
+        <span class="big-mark serif" aria-hidden="true">EcoLens</span>
+        <span class="hint mono">Screenshots coming soon</span>
+      </div>
+      <div class="btn-row">
+        <a class="primary" href="https://ecolens-6tdq.onrender.com" target="_blank" rel="noopener">Try it live ↗</a>
+        <a href="mailto:maksud.yusuf2017@gmail.com">Ask me about it</a>
+      </div>
+    </header>
+
+    <section>
+      <p class="section-label mono">The problem</p>
+      <h2 class="serif">Recycling fails at the bin, not in the heart</h2>
+      <p>Most people want to recycle. What stops them is a knowledge gap at the worst possible moment: you're standing in front of the bin, holding something, and you simply don't know which category it belongs to. Multiply that hesitation by millions of people, and good intentions turn into landfill.</p>
+      <p>That's a philosophical observation as much as a practical one — the gap between knowing what's right and being able to act on it. EcoLens is my attempt to close that gap with engineering: make the right choice as easy as taking a photo.</p>
+    </section>
+
+    <section>
+      <p class="section-label mono">What it does</p>
+      <h2 class="serif">Photo in, answer out</h2>
+      <p>You photograph an item. EcoLens's AI vision model identifies what it is, then explains how to dispose of it properly — which bin, what to clean or separate first, and why it matters. Everything works in both Azerbaijani and English, because environmental tools should speak the language of the people using them.</p>
+      <p>It's a progressive web app, so it installs on any phone straight from the browser — no app store needed. Users get accounts, a scan history, and a daily scan allowance.</p>
+    </section>
+
+    <section>
+      <p class="section-label mono">How I built it</p>
+      <h2 class="serif">The stack</h2>
+      <ul class="stack-list">
+        <li><span class="k mono">Backend</span><span>Node.js + Express — one server handles the API and serves the frontend</span></li>
+        <li><span class="k mono">AI vision</span><span>Google Gemini identifies waste items from photos and generates disposal guidance</span></li>
+        <li><span class="k mono">Data &amp; auth</span><span>Supabase — user accounts, scan history, and per-user daily limits</span></li>
+        <li><span class="k mono">Frontend</span><span>Installable PWA, bilingual (Azerbaijani / English)</span></li>
+        <li><span class="k mono">Hosting</span><span>Deployed and live on Render</span></li>
+      </ul>
+    </section>
+
+    <section>
+      <p class="section-label mono">What it taught me</p>
+      <h2 class="serif">Building for real users changes everything</h2>
+      <p>EcoLens is deployed and used by real people, which taught me lessons no tutorial covers: rate-limiting an AI API so costs stay sane, designing auth flows people don't abandon, and thinking about abuse before it happens — my first genuine taste of the security mindset I want to study. A live app is a goal you defend every day.</p>
+      <div class="btn-row">
+        <a class="primary" href="https://ecolens-6tdq.onrender.com" target="_blank" rel="noopener">Try EcoLens live ↗</a>
+        <a href="#/">← Back to portfolio</a>
+      </div>
+    </section>
+  </div>
+</main>
+
+<div class="cmdk-overlay" id="cmdk" hidden role="dialog" aria-modal="true" aria-label="Quick navigation">
+  <div class="cmdk-panel">
+    <input id="cmdk-input" type="text" placeholder="Where to? Type to search…" autocomplete="off" spellcheck="false">
+    <ul class="cmdk-list" id="cmdk-list"></ul>
+  </div>
+</div>
+
+<footer>
+  <div class="wrap">
+    <span class="serif">Maksud Yusuf</span> · Goalkeeper, builder, future cybersecurity engineer · <a href="mailto:maksud.yusuf2017@gmail.com">maksud.yusuf2017@gmail.com</a> · 2026
+    <span class="integrity mono" id="integrity" title="SHA-256 checksum of this page, computed live in your browser — a security engineer's signature."></span>
+  </div>
+</footer>
+
+<script>
+  (function () {
+    var pages = document.querySelectorAll("[data-page]");
+
+    function route() {
+      var hash = window.location.hash;
+      var target = "home";
+      if (hash.indexOf("#/") === 0 && hash.length > 2) {
+        var name = hash.slice(2);
+        for (var i = 0; i < pages.length; i++) {
+          if (pages[i].getAttribute("data-page") === name) { target = name; break; }
+        }
+      }
+      var isAnchor = hash && hash.indexOf("#/") !== 0;
+      for (var j = 0; j < pages.length; j++) {
+        pages[j].hidden = pages[j].getAttribute("data-page") !== target;
+      }
+      if (isAnchor) {
+        var el = document.getElementById(hash.slice(1));
+        if (el) { el.scrollIntoView(); return; }
+      }
+      window.scrollTo(0, 0);
+    }
+
+    window.addEventListener("hashchange", route);
+    route();
+  })();
+
+  /* ── Scroll-reveal: sections and cards fade up as they enter view ── */
+  (function () {
+    var reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    var targets = document.querySelectorAll(
+      "section .section-label, section h2, section > .wrap > p, .about-grid, .facts-list, .card, .project-grid .project-card, .pitch-panel, .gk-quote, .contact-row, .email-line, .project-hero, .stack-list, .btn-row"
+    );
+    if (reduced || !("IntersectionObserver" in window)) return;
+
+    var counters = [];
+    var observer = new IntersectionObserver(function (entries) {
+      for (var i = 0; i < entries.length; i++) {
+        if (entries[i].isIntersecting) {
+          entries[i].target.classList.add("in");
+          observer.unobserve(entries[i].target);
+        }
+      }
+    }, { threshold: 0.12, rootMargin: "0px 0px -5% 0px" });
+
+    for (var i = 0; i < targets.length; i++) {
+      var el = targets[i];
+      el.classList.add("reveal");
+      /* stagger siblings: delay grows with position among revealed peers */
+      var parent = el.parentNode, entry = null;
+      for (var j = 0; j < counters.length; j++) {
+        if (counters[j].parent === parent) { entry = counters[j]; break; }
+      }
+      if (!entry) { entry = { parent: parent, n: 0 }; counters.push(entry); }
+      el.style.transitionDelay = Math.min(entry.n * 70, 350) + "ms";
+      entry.n++;
+      observer.observe(el);
+    }
+  })();
+
+  /* ── Command palette (Cmd/Ctrl+K) ── */
+  (function () {
+    var overlay = document.getElementById("cmdk");
+    var input = document.getElementById("cmdk-input");
+    var list = document.getElementById("cmdk-list");
+    var openBtn = document.getElementById("cmdk-open");
+    if (!overlay || !input || !list || !openBtn) return;
+
+    var isMac = /Mac|iP(hone|ad|od)/.test(navigator.platform || "");
+    openBtn.textContent = isMac ? "⌘K" : "Ctrl K";
+
+    var items = [
+      { label: "About", hint: "Section", act: "#about" },
+      { label: "Research", hint: "Section", act: "#research" },
+      { label: "Projects", hint: "Section", act: "#projects" },
+      { label: "Security — hash demo", hint: "Section", act: "#security" },
+      { label: "The Goalkeeper", hint: "Section", act: "#goalkeeper" },
+      { label: "Contact", hint: "Section", act: "#contact" },
+      { label: "EcoLens — project page", hint: "Project", act: "#/ecolens" },
+      { label: "Try EcoLens live", hint: "External ↗", act: "https://ecolens-6tdq.onrender.com", ext: true },
+      { label: "GitHub", hint: "External ↗", act: "https://github.com/Mausertheking", ext: true },
+      { label: "Email Maksud", hint: "maksud.yusuf2017@gmail.com", act: "mailto:maksud.yusuf2017@gmail.com", mail: true }
+    ];
+
+    var filtered = items, selected = 0, lastFocus = null;
+
+    function render(q) {
+      q = (q || "").toLowerCase();
+      filtered = [];
+      for (var i = 0; i < items.length; i++) {
+        var it = items[i];
+        if (!q || it.label.toLowerCase().indexOf(q) !== -1 || it.hint.toLowerCase().indexOf(q) !== -1) {
+          filtered.push(it);
+        }
+      }
+      if (selected >= filtered.length) selected = 0;
+      list.innerHTML = "";
+      if (!filtered.length) {
+        var empty = document.createElement("li");
+        empty.className = "cmdk-empty";
+        empty.textContent = "No match — try “research” or “ecolens”";
+        list.appendChild(empty);
+        return;
+      }
+      for (var j = 0; j < filtered.length; j++) {
+        (function (idx) {
+          var li = document.createElement("li");
+          if (idx === selected) li.className = "active";
+          var name = document.createElement("span");
+          name.textContent = filtered[idx].label;
+          var hint = document.createElement("span");
+          hint.className = "hint mono";
+          hint.textContent = filtered[idx].hint;
+          li.appendChild(name);
+          li.appendChild(hint);
+          li.addEventListener("click", function () { run(filtered[idx]); });
+          li.addEventListener("mousemove", function () {
+            if (selected !== idx) { selected = idx; render(input.value); }
+          });
+          list.appendChild(li);
+        })(j);
+      }
+    }
+
+    function open() {
+      lastFocus = document.activeElement;
+      overlay.hidden = false;
+      input.value = "";
+      selected = 0;
+      render("");
+      input.focus();
+    }
+    function close() {
+      overlay.hidden = true;
+      if (lastFocus && lastFocus.focus) lastFocus.focus();
+    }
+    function run(item) {
+      close();
+      if (item.ext) { window.open(item.act, "_blank", "noopener"); return; }
+      if (item.mail) { window.location.href = item.act; return; }
+      if (window.location.hash === item.act) {
+        var el = document.getElementById(item.act.slice(1));
+        if (el) el.scrollIntoView();
+      } else {
+        window.location.hash = item.act;
+      }
+    }
+
+    openBtn.addEventListener("click", open);
+    overlay.addEventListener("mousedown", function (e) {
+      if (e.target === overlay) close();
+    });
+    input.addEventListener("input", function () { selected = 0; render(input.value); });
+
+    document.addEventListener("keydown", function (e) {
+      if ((e.metaKey || e.ctrlKey) && (e.key === "k" || e.key === "K")) {
+        e.preventDefault();
+        if (overlay.hidden) open(); else close();
+        return;
+      }
+      if (overlay.hidden) return;
+      if (e.key === "Escape") { close(); }
+      else if (e.key === "ArrowDown") { e.preventDefault(); if (filtered.length) { selected = (selected + 1) % filtered.length; render(input.value); } }
+      else if (e.key === "ArrowUp") { e.preventDefault(); if (filtered.length) { selected = (selected - 1 + filtered.length) % filtered.length; render(input.value); } }
+      else if (e.key === "Enter") { e.preventDefault(); if (filtered[selected]) run(filtered[selected]); }
+    });
+  })();
+
+  /* ── Hash lab: hex encoding vs SHA-256, with change highlighting ── */
+  (function () {
+    var input = document.getElementById("hash-input");
+    var hexOut = document.getElementById("hex-out");
+    var hexStat = document.getElementById("hex-stat");
+    var hashOut = document.getElementById("hash-out");
+    var hashStat = document.getElementById("hash-stat");
+    if (!input || !hexOut || !hexStat || !hashOut || !hashStat) return;
+    if (!(window.crypto && crypto.subtle && window.TextEncoder)) {
+      hashStat.textContent = "Your browser doesn't support Web Crypto — the demo needs a modern browser.";
+      input.disabled = true;
+      return;
+    }
+
+    var HEX_CAP = 24; /* show at most this many input bytes */
+    var prevHex = null, prevHash = null, seq = 0;
+
+    function toHex(n) { return (n < 16 ? "0" : "") + n.toString(16); }
+
+    /* Renders bytes as hex pairs, highlighting positions that differ
+       from prevBytes. Returns how many displayed bytes changed. */
+    function renderRow(container, bytes, prevBytes, cap) {
+      container.innerHTML = "";
+      var changed = 0;
+      var n = Math.min(bytes.length, cap);
+      for (var i = 0; i < n; i++) {
+        var span = document.createElement("span");
+        span.textContent = toHex(bytes[i]);
+        if (prevBytes && (i >= prevBytes.length || prevBytes[i] !== bytes[i])) {
+          span.className = "chg";
+          changed++;
+        }
+        container.appendChild(span);
+      }
+      if (bytes.length > cap) {
+        var more = document.createElement("span");
+        more.textContent = "… +" + (bytes.length - cap) + " bytes";
+        container.appendChild(more);
+      }
+      if (!bytes.length) {
+        var empty = document.createElement("span");
+        empty.textContent = "(empty)";
+        container.appendChild(empty);
+      }
+      return changed;
+    }
+
+    function update() {
+      var mySeq = ++seq;
+      var enc = new TextEncoder().encode(input.value);
+
+      var changedBytes = renderRow(hexOut, enc, prevHex, HEX_CAP);
+      if (prevHex) {
+        if (changedBytes === 0 && enc.length === prevHex.length) {
+          hexStat.textContent = "unchanged — same text, same bytes, every time";
+        } else {
+          hexStat.textContent = changedBytes + " byte(s) changed — the rest stayed exactly where they were";
+        }
+      } else {
+        hexStat.textContent = enc.length + " bytes — decode them and your text comes back";
+      }
+      prevHex = enc;
+
+      crypto.subtle.digest("SHA-256", enc).then(function (buf) {
+        if (mySeq !== seq) return; /* a newer keystroke superseded this one */
+        var b = new Uint8Array(buf);
+        var flipped = 0;
+        if (prevHash) {
+          for (var i = 0; i < b.length; i++) {
+            var x = b[i] ^ prevHash[i];
+            while (x) { flipped += x & 1; x >>= 1; }
+          }
+        }
+        renderRow(hashOut, b, prevHash, 32);
+        if (prevHash) {
+          hashStat.textContent = flipped + " of 256 bits flipped (" + Math.round((flipped / 256) * 100) + "%) — unpredictable by design";
+        } else {
+          hashStat.textContent = "always 32 bytes, whether you hash one letter or a whole book";
+        }
+        prevHash = b;
+      })["catch"](function () {});
+    }
+
+    input.addEventListener("input", update);
+    update();
+  })();
+
+  /* ── Footer integrity hash: SHA-256 of this page, computed client-side ── */
+  (function () {
+    var el = document.getElementById("integrity");
+    if (!el || !window.crypto || !crypto.subtle || !window.TextEncoder) return;
+    try {
+      var data = new TextEncoder().encode(document.documentElement.outerHTML);
+      crypto.subtle.digest("SHA-256", data).then(function (buf) {
+        var b = new Uint8Array(buf), s = "";
+        for (var i = 0; i < b.length; i++) s += (b[i] < 16 ? "0" : "") + b[i].toString(16);
+        el.textContent = "integrity sha256:" + s.slice(0, 16) + "… (computed in your browser)";
+      })["catch"](function () {});
+    } catch (err) { /* older browsers: leave the line empty */ }
+  })();
+
+  /* ── Goalkeeper save animation ─────────────────────────────
+     Chalk-line scene: ball arcs toward the top corner, the
+     keeper dives late, tips it over the bar, lands, resets. */
+  (function () {
+    var canvas = document.getElementById("gk-canvas");
+    if (!canvas || !canvas.getContext) return;
+    var ctx = canvas.getContext("2d");
+    var W = 800, H = 340;
+    var CHALK = "#F5F9F3";
+    var CYCLE = 4.2;
+    var reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+    function resize() {
+      var dpr = window.devicePixelRatio || 1;
+      var w = canvas.clientWidth || W;
+      canvas.width = Math.round(w * dpr);
+      canvas.height = Math.round(w * (H / W) * dpr);
+      var s = (w * dpr) / W;
+      ctx.setTransform(s, 0, 0, s, 0, 0);
+      if (reduced) drawFrame(1.08);
+    }
+
+    function lerp(a, b, m) { return a + (b - a) * m; }
+    function easeOutCubic(x) { return 1 - Math.pow(1 - x, 3); }
+    function easeInQuad(x) { return x * x; }
+    function clamp01(x) { return x < 0 ? 0 : x > 1 ? 1 : x; }
+
+    /* Ball flight: quadratic bezier toward the top corner */
+    var B0 = { x: 840, y: 238 }, B1 = { x: 480, y: 66 }, B2 = { x: 136, y: 112 };
+    function ballFlight(u) {
+      var v = 1 - u;
+      return {
+        x: v * v * B0.x + 2 * v * u * B1.x + u * u * B2.x,
+        y: v * v * B0.y + 2 * v * u * B1.y + u * u * B2.y
+      };
+    }
+
+    /* Keeper poses: joints in local coords, origin at hip, up = -y */
+    var poseIdle = {
+      rot: -0.10, hip: { x: 190, y: 250 },
+      shoulder: { x: 0, y: -44 }, head: { x: 3, y: -58 },
+      armF: [{ x: 0, y: -44 }, { x: 15, y: -30 }, { x: 26, y: -38 }],
+      armB: [{ x: 0, y: -44 }, { x: 11, y: -27 }, { x: 22, y: -33 }],
+      legF: [{ x: 0, y: 0 }, { x: 8, y: 26 }, { x: 4, y: 50 }],
+      legB: [{ x: 0, y: 0 }, { x: -7, y: 25 }, { x: -12, y: 50 }]
+    };
+    var poseDive = {
+      rot: -0.80, hip: { x: 176, y: 172 },
+      shoulder: { x: 0, y: -46 }, head: { x: 9, y: -55 },
+      armF: [{ x: 0, y: -46 }, { x: 4, y: -66 }, { x: 9, y: -88 }],
+      armB: [{ x: 0, y: -46 }, { x: -2, y: -64 }, { x: -1, y: -86 }],
+      legF: [{ x: 0, y: 0 }, { x: 6, y: 28 }, { x: 14, y: 54 }],
+      legB: [{ x: 0, y: 0 }, { x: -4, y: 30 }, { x: 2, y: 60 }]
+    };
+    var poseLand = {
+      rot: -1.45, hip: { x: 148, y: 274 },
+      shoulder: { x: 0, y: -46 }, head: { x: 9, y: -55 },
+      armF: [{ x: 0, y: -46 }, { x: 4, y: -66 }, { x: 10, y: -84 }],
+      armB: [{ x: 0, y: -46 }, { x: -2, y: -62 }, { x: 0, y: -80 }],
+      legF: [{ x: 0, y: 0 }, { x: 10, y: 26 }, { x: 6, y: 52 }],
+      legB: [{ x: 0, y: 0 }, { x: -2, y: 28 }, { x: -10, y: 54 }]
+    };
+
+    function lerpJoint(a, b, m) { return { x: lerp(a.x, b.x, m), y: lerp(a.y, b.y, m) }; }
+    function lerpChain(a, b, m) {
+      var out = [];
+      for (var i = 0; i < a.length; i++) out.push(lerpJoint(a[i], b[i], m));
+      return out;
+    }
+    function lerpPose(a, b, m) {
+      return {
+        rot: lerp(a.rot, b.rot, m),
+        hip: lerpJoint(a.hip, b.hip, m),
+        shoulder: lerpJoint(a.shoulder, b.shoulder, m),
+        head: lerpJoint(a.head, b.head, m),
+        armF: lerpChain(a.armF, b.armF, m),
+        armB: lerpChain(a.armB, b.armB, m),
+        legF: lerpChain(a.legF, b.legF, m),
+        legB: lerpChain(a.legB, b.legB, m)
+      };
+    }
+
+    function strokeChain(pts) {
+      ctx.beginPath();
+      ctx.moveTo(pts[0].x, pts[0].y);
+      for (var i = 1; i < pts.length; i++) ctx.lineTo(pts[i].x, pts[i].y);
+      ctx.stroke();
+    }
+
+    function drawKeeper(pose, alpha) {
+      ctx.save();
+      ctx.globalAlpha = alpha;
+      ctx.translate(pose.hip.x, pose.hip.y);
+      ctx.rotate(pose.rot);
+      ctx.strokeStyle = CHALK;
+      ctx.fillStyle = CHALK;
+      ctx.lineWidth = 6.5;
+      ctx.lineCap = "round";
+      ctx.lineJoin = "round";
+      /* back limbs slightly dimmer for depth */
+      ctx.globalAlpha = alpha * 0.65;
+      strokeChain(pose.armB);
+      strokeChain(pose.legB);
+      ctx.globalAlpha = alpha;
+      strokeChain([{ x: 0, y: 2 }, pose.shoulder]);
+      strokeChain(pose.armF);
+      strokeChain(pose.legF);
+      /* head */
+      ctx.beginPath();
+      ctx.arc(pose.head.x, pose.head.y, 10, 0, Math.PI * 2);
+      ctx.fill();
+      /* gloves */
+      var hf = pose.armF[2], hb = pose.armB[2];
+      ctx.beginPath(); ctx.arc(hf.x, hf.y, 5.5, 0, Math.PI * 2); ctx.fill();
+      ctx.globalAlpha = alpha * 0.65;
+      ctx.beginPath(); ctx.arc(hb.x, hb.y, 5.5, 0, Math.PI * 2); ctx.fill();
+      ctx.restore();
+    }
+
+    function drawBall(x, y, rot, alpha) {
+      ctx.save();
+      ctx.globalAlpha = alpha;
+      ctx.translate(x, y);
+      ctx.rotate(rot);
+      ctx.strokeStyle = CHALK;
+      ctx.lineWidth = 3;
+      ctx.beginPath(); ctx.arc(0, 0, 9, 0, Math.PI * 2); ctx.stroke();
+      ctx.lineWidth = 2;
+      ctx.beginPath(); ctx.moveTo(-9, 0); ctx.lineTo(9, 0); ctx.stroke();
+      ctx.restore();
+    }
+
+    function drawGoal() {
+      ctx.save();
+      ctx.strokeStyle = CHALK;
+      ctx.lineCap = "round";
+      /* net */
+      ctx.globalAlpha = 0.22;
+      ctx.lineWidth = 1.5;
+      var i, u;
+      for (i = 0; i <= 5; i++) {
+        u = i / 5;
+        ctx.beginPath();
+        ctx.moveTo(lerp(78, 130, u), lerp(104, 92, u));
+        ctx.lineTo(lerp(78, 130, u), lerp(282, 300, u));
+        ctx.stroke();
+      }
+      for (i = 0; i <= 6; i++) {
+        u = i / 6;
+        ctx.beginPath();
+        ctx.moveTo(78, lerp(104, 282, u));
+        ctx.lineTo(130, lerp(92, 300, u));
+        ctx.stroke();
+      }
+      /* frame */
+      ctx.globalAlpha = 0.9;
+      ctx.lineWidth = 5;
+      ctx.beginPath();
+      ctx.moveTo(78, 282); ctx.lineTo(78, 104); ctx.lineTo(130, 92); ctx.lineTo(130, 300);
+      ctx.stroke();
+      /* ground line */
+      ctx.globalAlpha = 0.5;
+      ctx.lineWidth = 3;
+      ctx.beginPath(); ctx.moveTo(24, 300); ctx.lineTo(776, 300); ctx.stroke();
+      /* penalty spot */
+      ctx.globalAlpha = 0.5;
+      ctx.beginPath(); ctx.moveTo(560, 300); ctx.lineTo(572, 300); ctx.lineWidth = 5; ctx.stroke();
+      ctx.restore();
+    }
+
+    function drawFrame(t) {
+      ctx.clearRect(0, 0, W, H);
+      drawGoal();
+
+      /* actor fade for loop reset */
+      var alpha = 1;
+      if (t >= 2.9 && t < 3.3) alpha = 1 - (t - 2.9) / 0.4;
+      else if (t >= 3.3 && t < 3.5) alpha = 0;
+      else if (t >= 3.5 && t < 3.9) alpha = (t - 3.5) / 0.4;
+
+      /* keeper */
+      var pose;
+      if (t < 0.75 || t >= 3.3) {
+        pose = lerpPose(poseIdle, poseIdle, 0);
+        pose.hip.y += Math.sin(t * 5) * 3; /* idle bob */
+      } else if (t < 1.10) {
+        pose = lerpPose(poseIdle, poseDive, easeOutCubic((t - 0.75) / 0.35));
+      } else if (t < 1.75) {
+        pose = lerpPose(poseDive, poseLand, easeInQuad((t - 1.10) / 0.65));
+      } else {
+        pose = poseLand;
+      }
+      if (alpha > 0) drawKeeper(pose, alpha);
+
+      /* ball */
+      if (t < 1.10) {
+        var p = ballFlight(t / 1.10);
+        drawBall(p.x, p.y, t * 12, 1);
+      } else if (t < 2.0) {
+        var t2 = t - 1.10;
+        var bx = 136 - 230 * t2;
+        var by = 112 - 250 * t2 + 260 * t2 * t2;
+        if (bx > -12 && by > -12) drawBall(bx, by, 13 + t2 * 10, 1);
+      }
+
+      /* contact flash */
+      if (t >= 1.10 && t < 1.38) {
+        var f = (t - 1.10) / 0.28;
+        ctx.save();
+        ctx.globalAlpha = 0.7 * (1 - f);
+        ctx.strokeStyle = CHALK;
+        ctx.lineWidth = 2.5;
+        ctx.beginPath();
+        ctx.arc(136, 112, 8 + f * 26, 0, Math.PI * 2);
+        ctx.stroke();
+        ctx.restore();
+      }
+    }
+
+    var rafId = null, startTime = null;
+    function tick(now) {
+      if (startTime === null) startTime = now;
+      drawFrame(((now - startTime) / 1000) % CYCLE);
+      rafId = window.requestAnimationFrame(tick);
+    }
+    function play() {
+      if (rafId === null && !reduced) rafId = window.requestAnimationFrame(tick);
+    }
+    function pause() {
+      if (rafId !== null) { window.cancelAnimationFrame(rafId); rafId = null; }
+    }
+
+    window.addEventListener("resize", resize);
+    resize();
+
+    if (reduced) {
+      drawFrame(1.08); /* still of the save itself */
+    } else if ("IntersectionObserver" in window) {
+      new IntersectionObserver(function (entries) {
+        for (var i = 0; i < entries.length; i++) {
+          if (entries[i].isIntersecting) play(); else pause();
+        }
+      }, { threshold: 0.15 }).observe(canvas);
+    } else {
+      play();
+    }
+  })();
+</script>
+
+</body>
+</html>
