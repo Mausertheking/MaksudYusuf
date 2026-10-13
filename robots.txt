@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://maksudyusuf.com/sitemap.xml
