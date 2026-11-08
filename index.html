@@ -497,7 +497,7 @@
     background: repeating-linear-gradient(90deg, rgba(255, 255, 255, 0.045) 0 26px, transparent 26px 52px), linear-gradient(155deg, #1D5A3A, #2C7550);
   }
   .pitch-panel canvas { display: block; width: 100%; height: auto; }
-  .pitch-panel .hint { position: absolute; right: 1rem; bottom: 0.8rem; font-size: 0.72rem; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: rgba(244, 248, 242, 0.7); }
+  .pitch-panel .hint { position: absolute; right: 1rem; top: 0.8rem; font-size: 0.72rem; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: rgba(244, 248, 242, 0.7); }
   .gk-quote { margin: 1.25rem 0 0; padding: 0 0 0 1.1rem; border-left: 3px solid var(--brass); font-family: var(--serif); font-style: italic; font-size: 1.25rem; line-height: 1.45; color: var(--ink); }
   .music-art { aspect-ratio: 16 / 7; background: var(--navy-800); display: grid; place-items: center; overflow: hidden; }
   .music-art svg { width: 82%; height: auto; color: var(--brass-light); }
@@ -863,7 +863,7 @@
       <div class="beyond">
         <article class="story">
           <div class="pitch-panel">
-            <canvas id="gk-canvas" width="800" height="340" role="img" aria-label="Animated chalk drawing of a goalkeeper diving to tip a shot over the bar"></canvas>
+            <canvas id="gk-canvas" width="800" height="340" role="img" aria-label="Animated chalk drawing of a penalty: the goalkeeper dives full stretch and tips the shot over the bar"></canvas>
             <span class="hint">90′ of concentration</span>
           </div>
           <div class="body">
@@ -1814,179 +1814,296 @@
     update();
   })();
 
-  /* ══════════ Goalkeeper save animation ══════════ */
+  /* ══════════ Goalkeeper save animation ══════════
+     A penalty seen from behind the taker: run-up, strike, a full-stretch dive
+     that tips the ball over the bar, the landing, and the keeper getting up.
+     Figures are drawn from fixed-length bones, so poses blend without stretching. */
   (function () {
     var canvas = document.getElementById("gk-canvas");
     if (!canvas || !canvas.getContext) return;
     var ctx = canvas.getContext("2d");
     var W = 800, H = 340;
-    var CHALK = "#F4F8F2";
-    var CYCLE = 4.2;
+    var CHALK = "#F4F8F2", BRASS = "#E9D3A3";
+    var CYCLE = 4.9;
     var reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+    var GROUND = 230, POST_L = 220, POST_R = 580, BAR = 110;
+    var BACK_L = 240, BACK_R = 560, BACK_BAR = 124, BACK_GROUND = 216;
+    var SPOT = { x: 400, y: 318 };
+    var CONTACT = { x: 244, y: 130 };
+    var T_KICK = 1.4, T_SAVE = 2.2, T_LAND = 2.72;
+
+    function lerp(a, b, m) { return a + (b - a) * m; }
+    function clamp01(x) { return x < 0 ? 0 : x > 1 ? 1 : x; }
+    function seg(t, a, b) { return clamp01((t - a) / (b - a)); }
+    function easeInOut(x) { return x < 0.5 ? 2 * x * x : 1 - Math.pow(-2 * x + 2, 2) / 2; }
+    function easeOut(x) { return 1 - Math.pow(1 - x, 3); }
+    function easeIn(x) { return x * x; }
+    function dir(a) { return { x: Math.sin(a), y: Math.cos(a) }; }
+    function off(o, v, k) { return { x: o.x + v.x * k, y: o.y + v.y * k }; }
+
+    // Angles: 0 points down, PI points up, positive turns toward screen-right.
+    var KEYS = ["x", "y", "t", "la1", "la2", "ra1", "ra2", "ll1", "ll2", "rl1", "rl2"];
+    function blend(a, b, m) { var o = {}; for (var i = 0; i < KEYS.length; i++) o[KEYS[i]] = lerp(a[KEYS[i]], b[KEYS[i]], m); return o; }
+    var PI = Math.PI, TAU = Math.PI * 2;
+
+    // Keeper (facing the camera)
+    var K_READY = { x: 400, y: 187, t: PI, la1: -0.75, la2: PI + 0.55, ra1: 0.75, ra2: PI - 0.55, ll1: -0.32, ll2: -0.05, rl1: 0.32, rl2: 0.05 };
+    var K_LOAD = { x: 392, y: 191, t: PI + 0.25, la1: -0.9, la2: -0.4, ra1: 0.2, ra2: 0.1, ll1: -0.55, ll2: 0.25, rl1: 0.45, rl2: -0.1 };
+    var K_DIVE = { x: 298, y: 165, t: PI + 1.0, la1: PI + 1.05, la2: PI + 1.0, ra1: PI + 0.95, ra2: PI + 0.9, ll1: 0.55, ll2: 0.95, rl1: 0.95, rl2: 1.25 };
+    var K_LAND = { x: 292, y: 222, t: 4.66, la1: 4.62, la2: 4.55, ra1: 4.75, ra2: 4.7, ll1: 1.45, ll2: 1.6, rl1: 1.2, rl2: 1.85 };
+    var K_UP = { x: 400, y: 187, t: PI, la1: TAU - 0.75, la2: PI + 0.55, ra1: TAU + 0.75, ra2: PI - 0.55, ll1: -0.32, ll2: -0.05, rl1: 0.32, rl2: 0.05 };
+
+    // Taker (seen from behind)
+    var S_WIND = { x: 432, y: 280, t: PI + 0.12, la1: -1.35, la2: -1.5, ra1: 0.5, ra2: 0.2, ll1: -0.08, ll2: 0.02, rl1: 0.4, rl2: 2.5 };
+    var S_STRIKE = { x: 432, y: 280, t: PI + 0.2, la1: -1.6, la2: -1.9, ra1: 0.6, ra2: 0.5, ll1: -0.08, ll2: 0.02, rl1: -0.55, rl2: -0.65 };
+    var S_FOLLOW = { x: 430, y: 280, t: PI + 0.25, la1: -1.7, la2: -2.1, ra1: 0.75, ra2: 0.7, ll1: -0.08, ll2: 0.02, rl1: -0.9, rl2: -1.2 };
+    var S_STAND = { x: 430, y: 281, t: PI, la1: -0.3, la2: -0.2, ra1: 0.3, ra2: 0.2, ll1: -0.1, ll2: 0, rl1: 0.1, rl2: 0 };
+    var S_HEAD = { x: 430, y: 281, t: PI, la1: PI + 0.95, la2: 1.85, ra1: PI - 0.95, ra2: TAU - 1.85, ll1: -0.1, ll2: 0, rl1: 0.1, rl2: 0 };
+
+    function runPose(s) {
+      var m = seg(s, 0, 1.05);
+      var ph = s * 13;
+      var sl = Math.sin(ph), sr = Math.sin(ph + PI);
+      return {
+        x: lerp(610, 452, m), y: lerp(300, 281, m) - 3 * Math.abs(Math.sin(ph)), t: PI + 0.04 * Math.sin(ph * 2),
+        la1: -0.35 - 0.3 * sl, la2: -0.95 - 0.3 * sl, ra1: 0.35 - 0.3 * sl, ra2: 0.95 - 0.3 * sl,
+        ll1: -0.12 + 0.18 * sl, ll2: -0.12 + 0.18 * sl + 1.7 * Math.max(0, -sl),
+        rl1: 0.12 + 0.18 * sr, rl2: 0.12 + 0.18 * sr - 1.7 * Math.max(0, -sr)
+      };
+    }
+
+    function keeperPose(s) {
+      if (s < 1.45) { var p = blend(K_READY, K_READY, 0); p.y += 2 * Math.sin(s * 9); return p; }
+      if (s < 1.72) return blend(K_READY, K_LOAD, easeInOut(seg(s, 1.45, 1.72)));
+      if (s < T_SAVE) {
+        var m = seg(s, 1.72, T_SAVE), q = blend(K_LOAD, K_DIVE, easeOut(m));
+        q.x = lerp(K_LOAD.x, K_DIVE.x, easeOut(m)); q.y = lerp(K_LOAD.y, K_DIVE.y, Math.sin(m * PI / 2));
+        return q;
+      }
+      if (s < T_LAND) {
+        var f = seg(s, T_SAVE, T_LAND), r = blend(K_DIVE, K_LAND, easeInOut(f));
+        r.y = lerp(K_DIVE.y, K_LAND.y, easeIn(f)); return r;
+      }
+      if (s < 3.55) { var l = blend(K_LAND, K_LAND, 0); l.y += 0.8 * Math.sin(s * 4); return l; }
+      if (s < 4.35) {
+        var g = seg(s, 3.55, 4.35), u = blend(K_LAND, K_UP, easeInOut(g));
+        u.y = lerp(K_LAND.y, K_UP.y, easeOut(g)); return u;
+      }
+      return blend(K_UP, K_UP, 0);
+    }
+
+    function takerPose(s) {
+      if (s < 1.05) return runPose(s);
+      if (s < 1.25) return blend(runPose(1.05), S_WIND, easeInOut(seg(s, 1.05, 1.25)));
+      if (s < T_KICK) return blend(S_WIND, S_STRIKE, easeIn(seg(s, 1.25, T_KICK)));
+      if (s < 1.75) return blend(S_STRIKE, S_FOLLOW, easeOut(seg(s, T_KICK, 1.75)));
+      if (s < 2.5) return blend(S_FOLLOW, S_STAND, easeInOut(seg(s, 1.75, 2.5)));
+      if (s < 2.85) return blend(S_STAND, S_HEAD, easeInOut(seg(s, 2.5, 2.85)));
+      return blend(S_HEAD, S_HEAD, 0);
+    }
+
+    function poly(pts) {
+      ctx.beginPath(); ctx.moveTo(pts[0].x, pts[0].y);
+      for (var i = 1; i < pts.length; i++) ctx.lineTo(pts[i].x, pts[i].y);
+      ctx.stroke();
+    }
+    function dot(p, r) { ctx.beginPath(); ctx.arc(p.x, p.y, r, 0, TAU); ctx.fill(); }
+
+    function drawFigure(p, sc, color, alpha, lw, gloves, number) {
+      if (alpha <= 0.01) return;
+      var d = dir(p.t), side = { x: -Math.cos(p.t), y: Math.sin(p.t) };
+      var pel = { x: p.x, y: p.y };
+      var neck = off(pel, d, 31 * sc);
+      var head = off(neck, d, 11 * sc);
+      var shL = off(neck, side, -10 * sc), shR = off(neck, side, 10 * sc);
+      var hpL = off(pel, side, -6 * sc), hpR = off(pel, side, 6 * sc);
+      function limb(o, a1, a2, l1, l2) { var j = off(o, dir(a1), l1); return [o, j, off(j, dir(a2), l2)]; }
+      var aL = limb(shL, p.la1, p.la2, 17 * sc, 16 * sc), aR = limb(shR, p.ra1, p.ra2, 17 * sc, 16 * sc);
+      var gL = limb(hpL, p.ll1, p.ll2, 22 * sc, 22 * sc), gR = limb(hpR, p.rl1, p.rl2, 22 * sc, 22 * sc);
+      ctx.save();
+      ctx.globalAlpha = alpha; ctx.strokeStyle = color; ctx.fillStyle = color;
+      ctx.lineCap = "round"; ctx.lineJoin = "round";
+      ctx.lineWidth = lw; poly(gL); poly(gR);
+      var chest = off(neck, d, -3 * sc);
+      ctx.lineWidth = lw * 0.9;
+      ctx.beginPath(); ctx.moveTo(off(chest, side, -9 * sc).x, off(chest, side, -9 * sc).y);
+      ctx.lineTo(off(chest, side, 9 * sc).x, off(chest, side, 9 * sc).y);
+      ctx.lineTo(hpR.x, hpR.y); ctx.lineTo(hpL.x, hpL.y); ctx.closePath(); ctx.fill(); ctx.stroke();
+      ctx.lineWidth = lw; poly([shL, shR]); poly(aL); poly(aR);
+      if (number) {
+        var mid = off(pel, d, 17 * sc);
+        ctx.save(); ctx.translate(mid.x, mid.y); ctx.rotate(PI - p.t);
+        ctx.fillStyle = "#2A6B47"; ctx.font = "700 " + Math.round(10 * sc) + "px " + "system-ui, sans-serif";
+        ctx.textAlign = "center"; ctx.textBaseline = "middle"; ctx.fillText(number, 0, 0); ctx.restore();
+      }
+      dot(head, 8.5 * sc);
+      dot(gL[2], lw * 0.75); dot(gR[2], lw * 0.75);
+      if (gloves) { dot(aL[2], 4.6 * sc); dot(aR[2], 4.6 * sc); }
+      ctx.restore();
+      return { hands: [aL[2], aR[2]] };
+    }
+
+    function drawPitch() {
+      var g = ctx.createLinearGradient(0, 0, 0, H);
+      g.addColorStop(0, "#1A4A31"); g.addColorStop(0.65, "#25643F"); g.addColorStop(1, "#2D7550");
+      ctx.fillStyle = g; ctx.fillRect(0, 0, W, H);
+      ctx.fillStyle = "rgba(255,255,255,0.045)";
+      var prev = 96;
+      for (var i = 1; i <= 10; i++) {
+        var y = 96 + 244 * Math.pow(i / 10, 1.7);
+        if (i % 2) ctx.fillRect(0, prev, W, y - prev);
+        prev = y;
+      }
+      ctx.save();
+      ctx.strokeStyle = CHALK; ctx.lineCap = "round"; ctx.globalAlpha = 0.55; ctx.lineWidth = 2.5;
+      poly([{ x: 0, y: GROUND }, { x: W, y: GROUND }]);
+      ctx.lineWidth = 2.2;
+      poly([{ x: 176, y: GROUND }, { x: 140, y: 264 }, { x: 660, y: 264 }, { x: 624, y: GROUND }]);
+      ctx.globalAlpha = 0.6; ctx.fillStyle = CHALK;
+      ctx.beginPath(); ctx.ellipse(SPOT.x, SPOT.y + 4, 6, 2.2, 0, 0, TAU); ctx.fill();
+      ctx.restore();
+    }
+
+    function drawNet() {
+      ctx.save();
+      ctx.strokeStyle = CHALK; ctx.lineWidth = 1.2; ctx.globalAlpha = 0.2;
+      var i, u;
+      for (i = 0; i <= 16; i++) { u = i / 16; var x = lerp(BACK_L, BACK_R, u); poly([{ x: x, y: BACK_BAR }, { x: x, y: BACK_GROUND }]); poly([{ x: lerp(POST_L, POST_R, u), y: BAR }, { x: x, y: BACK_BAR }]); }
+      for (i = 0; i <= 7; i++) { u = i / 7; var y = lerp(BACK_BAR, BACK_GROUND, u); poly([{ x: BACK_L, y: y }, { x: BACK_R, y: y }]); poly([{ x: POST_L, y: lerp(BAR, GROUND, u) }, { x: BACK_L, y: y }]); poly([{ x: POST_R, y: lerp(BAR, GROUND, u) }, { x: BACK_R, y: y }]); }
+      ctx.globalAlpha = 0.35; ctx.lineWidth = 2;
+      poly([{ x: BACK_L, y: BACK_GROUND }, { x: BACK_L, y: BACK_BAR }, { x: BACK_R, y: BACK_BAR }, { x: BACK_R, y: BACK_GROUND }]);
+      ctx.restore();
+    }
+
+    function drawFrame(wob) {
+      ctx.save();
+      ctx.strokeStyle = CHALK; ctx.lineCap = "round"; ctx.lineJoin = "round"; ctx.lineWidth = 5.5; ctx.globalAlpha = 0.95;
+      poly([{ x: POST_L, y: GROUND }, { x: POST_L, y: BAR + wob * 0.4 }, { x: (POST_L + POST_R) / 2, y: BAR + wob }, { x: POST_R, y: BAR + wob * 0.4 }, { x: POST_R, y: GROUND }]);
+      ctx.restore();
+    }
+
+    function drawBall(x, y, r, rot, alpha) {
+      if (alpha <= 0.01) return;
+      ctx.save(); ctx.globalAlpha = alpha; ctx.translate(x, y); ctx.rotate(rot);
+      ctx.fillStyle = CHALK; ctx.beginPath(); ctx.arc(0, 0, r, 0, TAU); ctx.fill();
+      ctx.strokeStyle = "#2A6B47"; ctx.lineWidth = Math.max(1, r * 0.22);
+      ctx.beginPath(); ctx.moveTo(-r * 0.7, 0); ctx.lineTo(r * 0.7, 0); ctx.stroke();
+      ctx.beginPath(); ctx.arc(0, 0, r * 0.35, 0, TAU); ctx.stroke();
+      ctx.restore();
+    }
+
+    function shadow(x, y, rx, a) {
+      if (a <= 0.01) return;
+      ctx.save(); ctx.fillStyle = "rgba(0,0,0," + a + ")"; ctx.beginPath(); ctx.ellipse(x, y, rx, rx * 0.22, 0, 0, TAU); ctx.fill(); ctx.restore();
+    }
+
+    function ballInFlight(s) {
+      var u = seg(s, T_KICK, T_SAVE), e = 1 - Math.pow(1 - u, 1.35);
+      var gy = lerp(SPOT.y, GROUND - 2, e);
+      return { x: lerp(SPOT.x, CONTACT.x, e), y: gy - (lerp(0, gy - CONTACT.y, Math.pow(e, 1.2)) + 10 * Math.sin(PI * e)), gy: gy, r: lerp(11, 5.5, e) };
+    }
+
+    var parts = [];
+    function burst(x, y, n, spread, up, life) {
+      for (var i = 0; i < n; i++) {
+        var a = Math.random() * TAU, sp = spread * (0.4 + Math.random() * 0.8);
+        parts.push({ x: x, y: y, vx: Math.cos(a) * sp, vy: Math.sin(a) * sp * 0.6 - up * Math.random(), life: life, max: life, r: 1 + Math.random() * 1.8 });
+      }
+    }
+    function stepParts(dt) {
+      for (var i = parts.length - 1; i >= 0; i--) {
+        var p = parts[i]; p.life -= dt; if (p.life <= 0) { parts.splice(i, 1); continue; }
+        p.x += p.vx * dt; p.y += p.vy * dt; p.vy += 120 * dt; p.vx *= 0.97;
+      }
+    }
+
+    function draw(s) {
+      ctx.clearRect(0, 0, W, H);
+      drawPitch();
+      var wob = (s > T_SAVE && s < 3.1) ? 3 * Math.exp(-5.5 * (s - T_SAVE)) * Math.sin(48 * (s - T_SAVE)) : 0;
+      var fadeIn = seg(s, 0, 0.3), fadeOut = 1 - seg(s, 4.35, 4.8);
+
+      // Deflected ball, behind the frame
+      if (s >= T_SAVE && s < 3.2) {
+        var v = seg(s, T_SAVE, 3.0);
+        var bx = lerp(CONTACT.x, 150, easeOut(v)), by = CONTACT.y - 330 * v + 400 * v * v;
+        drawBall(bx, by, lerp(5.5, 4.3, v), s * 18, 1 - seg(v, 0.85, 1));
+      }
+      drawNet();
+      drawFrame(wob);
+
+      // Keeper and shadow
+      var kp = keeperPose(s);
+      var lift = clamp01((K_READY.y + 4 - kp.y) / 60);
+      shadow(kp.x - (kp.y < 200 ? 0 : 10), GROUND + 3, kp.y > 210 ? 46 : 20, 0.22 * (1 - 0.6 * lift));
+      drawFigure(kp, 1, CHALK, 1, 5, true);
+
+      // Ball before the save
+      if (s < T_SAVE) {
+        if (s < T_KICK) {
+          shadow(SPOT.x + 2, SPOT.y + 9, 11, 0.25 * fadeIn);
+          drawBall(SPOT.x, SPOT.y, 11, 0, fadeIn);
+        } else {
+          for (var k = 5; k >= 1; k--) {
+            var tp = ballInFlight(s - k * 0.025);
+            ctx.save(); ctx.globalAlpha = 0.07 * (6 - k); ctx.fillStyle = CHALK;
+            ctx.beginPath(); ctx.arc(tp.x, tp.y, tp.r * 0.85, 0, TAU); ctx.fill(); ctx.restore();
+          }
+          var b = ballInFlight(s);
+          shadow(b.x, b.gy + 2, b.r * 1.1, 0.22 * (1 - seg(s, T_KICK, T_SAVE) * 0.6));
+          drawBall(b.x, b.y, b.r, (s - T_KICK) * 22, 1);
+        }
+      }
+
+      // Taker in the foreground
+      drawFigure(takerPose(s), 1.25, BRASS, Math.min(fadeIn, fadeOut), 6, false, "10");
+
+      // Contact flash and particles
+      if (s >= T_SAVE && s < 2.5) {
+        var k2 = seg(s, T_SAVE, 2.5);
+        ctx.save(); ctx.strokeStyle = CHALK; ctx.globalAlpha = 0.8 * (1 - k2); ctx.lineWidth = 2.5;
+        ctx.beginPath(); ctx.arc(CONTACT.x, CONTACT.y, 7 + 34 * easeOut(k2), 0, TAU); ctx.stroke(); ctx.restore();
+      }
+      ctx.save(); ctx.fillStyle = CHALK;
+      for (var i = 0; i < parts.length; i++) {
+        var p = parts[i]; ctx.globalAlpha = 0.85 * (p.life / p.max);
+        ctx.beginPath(); ctx.arc(p.x, p.y, p.r, 0, TAU); ctx.fill();
+      }
+      ctx.restore();
+    }
+
+    var s = 0, last = null, rafId = null;
+    function tick(now) {
+      if (last === null) last = now;
+      var dt = Math.min(0.05, (now - last) / 1000); last = now;
+      var rate = (s > 2.04 && s < 2.36) ? 0.3 : 1;
+      var ns = s + dt * rate;
+      if (s < T_SAVE && ns >= T_SAVE) burst(CONTACT.x, CONTACT.y, 14, 110, 40, 0.6);
+      if (s < T_LAND && ns >= T_LAND) { burst(K_LAND.x - 30, GROUND - 2, 8, 60, 50, 0.7); burst(K_LAND.x + 20, GROUND - 2, 8, 60, 50, 0.7); }
+      if (ns >= CYCLE) { ns -= CYCLE; parts = []; }
+      stepParts(dt * rate);
+      s = ns;
+      draw(s);
+      rafId = window.requestAnimationFrame(tick);
+    }
+    function play() { if (rafId === null && !reduced) { last = null; rafId = window.requestAnimationFrame(tick); } }
+    function pause() { if (rafId !== null) { window.cancelAnimationFrame(rafId); rafId = null; } }
 
     function resize() {
       var dpr = window.devicePixelRatio || 1;
       var w = canvas.clientWidth || W;
       canvas.width = Math.round(w * dpr);
       canvas.height = Math.round(w * (H / W) * dpr);
-      var s = (w * dpr) / W;
-      ctx.setTransform(s, 0, 0, s, 0, 0);
-      if (reduced || rafId === null) drawFrame(reduced ? 1.08 : lastT);
+      var k = (w * dpr) / W;
+      ctx.setTransform(k, 0, 0, k, 0, 0);
+      draw(reduced ? T_SAVE + 0.02 : s);
     }
-
-    function lerp(a, b, m) { return a + (b - a) * m; }
-    function easeOutCubic(x) { return 1 - Math.pow(1 - x, 3); }
-    function easeInQuad(x) { return x * x; }
-
-    var B0 = { x: 840, y: 238 }, B1 = { x: 480, y: 66 }, B2 = { x: 136, y: 112 };
-    function ballFlight(u) {
-      var v = 1 - u;
-      return { x: v * v * B0.x + 2 * v * u * B1.x + u * u * B2.x, y: v * v * B0.y + 2 * v * u * B1.y + u * u * B2.y };
-    }
-
-    var poseIdle = {
-      rot: -0.10, hip: { x: 190, y: 250 }, shoulder: { x: 0, y: -44 }, head: { x: 3, y: -58 },
-      armF: [{ x: 0, y: -44 }, { x: 15, y: -30 }, { x: 26, y: -38 }],
-      armB: [{ x: 0, y: -44 }, { x: 11, y: -27 }, { x: 22, y: -33 }],
-      legF: [{ x: 0, y: 0 }, { x: 8, y: 26 }, { x: 4, y: 50 }],
-      legB: [{ x: 0, y: 0 }, { x: -7, y: 25 }, { x: -12, y: 50 }]
-    };
-    var poseDive = {
-      rot: -0.80, hip: { x: 176, y: 172 }, shoulder: { x: 0, y: -46 }, head: { x: 9, y: -55 },
-      armF: [{ x: 0, y: -46 }, { x: 4, y: -66 }, { x: 9, y: -88 }],
-      armB: [{ x: 0, y: -46 }, { x: -2, y: -64 }, { x: -1, y: -86 }],
-      legF: [{ x: 0, y: 0 }, { x: 6, y: 28 }, { x: 14, y: 54 }],
-      legB: [{ x: 0, y: 0 }, { x: -4, y: 30 }, { x: 2, y: 60 }]
-    };
-    var poseLand = {
-      rot: -1.45, hip: { x: 148, y: 274 }, shoulder: { x: 0, y: -46 }, head: { x: 9, y: -55 },
-      armF: [{ x: 0, y: -46 }, { x: 4, y: -66 }, { x: 10, y: -84 }],
-      armB: [{ x: 0, y: -46 }, { x: -2, y: -62 }, { x: 0, y: -80 }],
-      legF: [{ x: 0, y: 0 }, { x: 10, y: 26 }, { x: 6, y: 52 }],
-      legB: [{ x: 0, y: 0 }, { x: -2, y: 28 }, { x: -10, y: 54 }]
-    };
-
-    function lerpJoint(a, b, m) { return { x: lerp(a.x, b.x, m), y: lerp(a.y, b.y, m) }; }
-    function lerpChain(a, b, m) { var out = []; for (var i = 0; i < a.length; i++) out.push(lerpJoint(a[i], b[i], m)); return out; }
-    function lerpPose(a, b, m) {
-      return {
-        rot: lerp(a.rot, b.rot, m), hip: lerpJoint(a.hip, b.hip, m), shoulder: lerpJoint(a.shoulder, b.shoulder, m),
-        head: lerpJoint(a.head, b.head, m), armF: lerpChain(a.armF, b.armF, m), armB: lerpChain(a.armB, b.armB, m),
-        legF: lerpChain(a.legF, b.legF, m), legB: lerpChain(a.legB, b.legB, m)
-      };
-    }
-
-    function strokeChain(pts) {
-      ctx.beginPath();
-      ctx.moveTo(pts[0].x, pts[0].y);
-      for (var i = 1; i < pts.length; i++) ctx.lineTo(pts[i].x, pts[i].y);
-      ctx.stroke();
-    }
-
-    function drawKeeper(pose, alpha) {
-      ctx.save();
-      ctx.translate(pose.hip.x, pose.hip.y);
-      ctx.rotate(pose.rot);
-      ctx.strokeStyle = CHALK; ctx.fillStyle = CHALK;
-      ctx.lineWidth = 6.5; ctx.lineCap = "round"; ctx.lineJoin = "round";
-      ctx.globalAlpha = alpha * 0.65;
-      strokeChain(pose.armB); strokeChain(pose.legB);
-      ctx.globalAlpha = alpha;
-      strokeChain([{ x: 0, y: 2 }, pose.shoulder]); strokeChain(pose.armF); strokeChain(pose.legF);
-      ctx.beginPath(); ctx.arc(pose.head.x, pose.head.y, 10, 0, Math.PI * 2); ctx.fill();
-      var hf = pose.armF[2], hb = pose.armB[2];
-      ctx.beginPath(); ctx.arc(hf.x, hf.y, 5.5, 0, Math.PI * 2); ctx.fill();
-      ctx.globalAlpha = alpha * 0.65;
-      ctx.beginPath(); ctx.arc(hb.x, hb.y, 5.5, 0, Math.PI * 2); ctx.fill();
-      ctx.restore();
-    }
-
-    function drawBall(x, y, rot) {
-      ctx.save();
-      ctx.translate(x, y); ctx.rotate(rot);
-      ctx.strokeStyle = CHALK;
-      ctx.lineWidth = 3; ctx.beginPath(); ctx.arc(0, 0, 9, 0, Math.PI * 2); ctx.stroke();
-      ctx.lineWidth = 2; ctx.beginPath(); ctx.moveTo(-9, 0); ctx.lineTo(9, 0); ctx.stroke();
-      ctx.restore();
-    }
-
-    function drawGoal() {
-      ctx.save();
-      ctx.strokeStyle = CHALK; ctx.lineCap = "round";
-      ctx.globalAlpha = 0.22; ctx.lineWidth = 1.5;
-      var i, u;
-      for (i = 0; i <= 5; i++) {
-        u = i / 5;
-        ctx.beginPath(); ctx.moveTo(lerp(78, 130, u), lerp(104, 92, u)); ctx.lineTo(lerp(78, 130, u), lerp(282, 300, u)); ctx.stroke();
-      }
-      for (i = 0; i <= 6; i++) {
-        u = i / 6;
-        ctx.beginPath(); ctx.moveTo(78, lerp(104, 282, u)); ctx.lineTo(130, lerp(92, 300, u)); ctx.stroke();
-      }
-      ctx.globalAlpha = 0.9; ctx.lineWidth = 5;
-      ctx.beginPath(); ctx.moveTo(78, 282); ctx.lineTo(78, 104); ctx.lineTo(130, 92); ctx.lineTo(130, 300); ctx.stroke();
-      ctx.globalAlpha = 0.5; ctx.lineWidth = 3;
-      ctx.beginPath(); ctx.moveTo(24, 300); ctx.lineTo(776, 300); ctx.stroke();
-      ctx.lineWidth = 5;
-      ctx.beginPath(); ctx.moveTo(560, 300); ctx.lineTo(572, 300); ctx.stroke();
-      ctx.restore();
-    }
-
-    function drawFrame(t) {
-      ctx.clearRect(0, 0, W, H);
-      drawGoal();
-      var alpha = 1;
-      if (t >= 2.9 && t < 3.3) alpha = 1 - (t - 2.9) / 0.4;
-      else if (t >= 3.3 && t < 3.5) alpha = 0;
-      else if (t >= 3.5 && t < 3.9) alpha = (t - 3.5) / 0.4;
-
-      var pose;
-      if (t < 0.75 || t >= 3.3) {
-        pose = lerpPose(poseIdle, poseIdle, 0);
-        pose.hip.y += Math.sin(t * 5) * 3;
-      } else if (t < 1.10) {
-        pose = lerpPose(poseIdle, poseDive, easeOutCubic((t - 0.75) / 0.35));
-      } else if (t < 1.75) {
-        pose = lerpPose(poseDive, poseLand, easeInQuad((t - 1.10) / 0.65));
-      } else {
-        pose = poseLand;
-      }
-      if (alpha > 0) drawKeeper(pose, alpha);
-
-      if (t < 1.10) {
-        var p = ballFlight(t / 1.10);
-        drawBall(p.x, p.y, t * 12);
-      } else if (t < 2.0) {
-        var t2 = t - 1.10;
-        var bx = 136 - 230 * t2, by = 112 - 250 * t2 + 260 * t2 * t2;
-        if (bx > -12 && by > -12) drawBall(bx, by, 13 + t2 * 10);
-      }
-
-      if (t >= 1.10 && t < 1.38) {
-        var f = (t - 1.10) / 0.28;
-        ctx.save();
-        ctx.globalAlpha = 0.7 * (1 - f);
-        ctx.strokeStyle = CHALK; ctx.lineWidth = 2.5;
-        ctx.beginPath(); ctx.arc(136, 112, 8 + f * 26, 0, Math.PI * 2); ctx.stroke();
-        ctx.restore();
-      }
-    }
-
-    var rafId = null, startTime = null, lastT = 0;
-    function tick(now) {
-      if (startTime === null) startTime = now - lastT * 1000;
-      lastT = ((now - startTime) / 1000) % CYCLE;
-      drawFrame(lastT);
-      rafId = window.requestAnimationFrame(tick);
-    }
-    function play() { if (rafId === null && !reduced) { startTime = null; rafId = window.requestAnimationFrame(tick); } }
-    function pause() { if (rafId !== null) { window.cancelAnimationFrame(rafId); rafId = null; } }
-
     window.addEventListener("resize", resize);
     resize();
 
     if (reduced) {
-      drawFrame(1.08);
+      draw(T_SAVE + 0.02);
     } else if ("IntersectionObserver" in window) {
       new IntersectionObserver(function (entries) {
         entries.forEach(function (e) { if (e.isIntersecting) play(); else pause(); });
@@ -1994,6 +2111,7 @@
     } else {
       play();
     }
+    window.__gkDraw = draw;
   })();
 
   /* ══════════ Footer integrity hash ══════════ */
